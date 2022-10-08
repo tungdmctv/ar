@@ -11,51 +11,199 @@
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
   <body style="margin: 0px; overflow: hidden">
-    <a-scene embedded arjs gltf-model="dracoDecoderPath: gltf/;">
+    <a-scene
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      gltf-model="dracoDecoderPath: gltf/;"
+      renderer="logarithmicDepthBuffer: true; precision: medium;"
+    >
+      <a-assets>
+        <video
+          id="vid"
+          src="assets/malai.mp4"
+          preload="auto"
+          response-type="arraybuffer"
+          loop
+          crossorigin
+          webkit-playsinline
+          autoplay
+          muted
+          playsinline
+        ></video>
+      </a-assets>
+
+      <!-- <a-entity light="type: ambient; color: #FFFFFF"></a-entity> -->
+      <a-entity
+        light="type: hemisphere; color: #FFFFFF; groundColor: #FFFFFF; intensity: 1.5"
+      ></a-entity>
+
+      <a-marker
+        type="pattern"
+        preset="custom"
+        url="assets/malai.patt"
+        videohandler
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+        id="markerA"
+      >
+        <a-video
+          src="#vid"
+          scale="1 1 1"
+          position="0 0.1 0"
+          rotation="-90 0 0"
+          class="clickable"
+          gesture-handler
+        ></a-video>
+      </a-marker>
+
       <a-marker type="pattern" url="pattern-JDBW.patt">
         <a-entity
           id="jd"
-          scale="3 3 3"
+          scale="1 1 1"
           rotation="0 180 0"
-          gltf-model="JD_ONLY.glb"
+          gltf-model="assets/JD_OKX.glb"
         >
         </a-entity>
-      </a-marker>
 
-      <a-marker preset="hiro">
         <a-entity
-          id="star"
-          scale="0.03 0.03 0.03"
-          rotation="0 180 0"
-          gltf-model="horchan.glb"
-          animation="property: rotation; dur: 50000;
-        to: 0 -360 0; loop: true"
+          light="type: point; intensity: 2; distance: 40; decay: 2"
+          position="-10 -10 10"
+        ></a-entity>
+
+        <a-entity
+          light="type: point; intensity: 2; distance: 40; decay: 2"
+          position="10 10 10"
+        ></a-entity>
+
+        <a-entity
+          light="type: point; intensity: 2; distance: 40; decay: 2"
+          position="-10 10 10"
+        ></a-entity>
+        <a-entity
+          light="type: point; intensity: 2; distance: 40; decay: 2"
+          position="10 -10 10"
         ></a-entity>
       </a-marker>
 
       <a-marker type="pattern" url="pattern-lotus-bump3.patt">
         <a-entity
-          id="model"
+          id="buddhaOK"
           scale="1 1 1"
-          rotation="0 180 0"
+          rotation="0 90 0"
+          position="-.1 0 -.3"
           gltf-model="buddhaOK.glb"
-     
         ></a-entity>
+      </a-marker>
+
+      <a-marker preset="hiro">
+        <a-entity
+          id="horchan"
+          scale="0.01 0.01 0.01"
+          rotation="0 180 0"
+          gltf-model="horchan.glb"
+        ></a-entity>
+        <!--   animation="property: rotation; dur: 50000;
+        to: 0 -360 0; loop: true" -->
+        <a-light
+          type="directional"
+          position="0 0 0"
+          rotation="-90 0 0"
+          target="#directionaltarget"
+        >
+          <a-entity id="directionaltarget" position="0 0 -1"></a-entity>
+          <a-entity id="directionaltarget" position="1 0 -1"></a-entity>
+        </a-light>
       </a-marker>
 
       <a-marker type="pattern" url="pattern-JDpattern.patt">
         <a-entity
           id="man"
-          scale="1"
+          scale="1 1 1"
           rotation="0 180 0"
           gltf-model="MAN2.glb"
           animation-mixer="clip:wai;duration:1;loop:repeat;"
         ></a-entity>
+
+        <a-entity
+          gltf-model="./trex/scene.gltf"
+          scale="0.05 0.05 0.05"
+          rotation="0 180 0"
+
+          position="1 0 0"
+        ></a-entity>
+
+        <a-entity
+        gltf-model="./trex/scene.gltf"
+        scale="0.05 0.05 0.05"
+        rotation="0 180 0"
+
+        position="-1 0 0"
+      ></a-entity>
+      <a-entity light="type: ambient; color: #999999"></a-entity>
       </a-marker>
+      <!-- <a-nft
+        type="nft"
+        url="trex/trex-image/trex"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
+      >
+        <a-entity
+          gltf-model="trex/scene.gltf"
+          scale="5 5 5"
+          position="150 300 -100"
+        >
+        </a-entity>
+      </a-nft> -->
+      <!-- <a-nft
+        type="nft"
+        url="./ninja-des/"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
+      >
+        <a-entity
+          gltf-model="./trex/scene.gltf"
+          scale="0.2 0.2 0.2"
+          position="0 0 0"
+        >
+        </a-entity>
+      </a-nft> -->
 
       <a-entity camera></a-entity>
     </a-scene>
     <script>
+      AFRAME.registerComponent("videohandler", {
+        init: function () {
+          var marker = this.el;
+          this.vid = document.querySelector("#vid");
+
+          marker.addEventListener(
+            "markerFound",
+            function () {
+              this.toggle = true;
+              this.vid.volume = 1;
+              this.vid.play();
+            }.bind(this)
+          );
+
+          marker.addEventListener(
+            "markerLost",
+            function () {
+              this.toggle = false;
+              this.vid.pause();
+            }.bind(this)
+          );
+        },
+      });
+
       const man = document.getElementById("man");
       const actions = ["walk", "wai", "stand"];
       let i = 0;
