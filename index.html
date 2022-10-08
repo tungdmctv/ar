@@ -9,19 +9,46 @@
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
   <!-- include ar.js for A-Frame -->
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
   <body style="margin: 0px; overflow: hidden">
     <a-scene embedded arjs gltf-model="dracoDecoderPath: gltf/;">
-      <!-- <a-assets>
-        <a-asset-item id="JD" src="JD_OK.gltf"></a-asset-item>
-      </a-assets> -->
+      <a-marker type="pattern" url="pattern-JDBW.patt">
+        <a-entity
+          id="jd"
+          scale="3 3 3"
+          rotation="0 180 0"
+          gltf-model="JD_ONLY.glb"
+          animation="property: rotation; dur: 50000;
+          to: 0 -360 0; loop: true"
+        >
+        </a-entity>
+      </a-marker>
+      <a-marker preset="hiro">
+        <a-entity
+          id="man"
+          scale="1"
+          rotation="0 180 0"
+          gltf-model="MAN2.glb"
+          animation-mixer="clip:wai;duration:1;loop:repeat;"
+        ></a-entity>
+      </a-marker>
+
       <a-marker type="pattern" url="pattern-lotus-bump3.patt">
-        <!-- <a-box position="0 0.5 0" material="color: red;"></a-box> -->
-        <!-- define your gltf asset -->
-        <a-entity scale="1" rotation="0 180 0" gltf-model="JD_ONLY.glb"></a-entity>
+        <a-entity
+          id="model"
+          scale="2 2 2"
+          rotation="0 180 0"
+          gltf-model="buddhaOK.glb"
+          animation-mixer="clip:wai;duration:1;loop:repeat;"
+          animation="property: rotation; dur: 50000;
+          to: 0 -360 0; loop: true"
+        ></a-entity>
 
         <!-- use your gltf model -->
       </a-marker>
+
       <a-entity camera></a-entity>
     </a-scene>
+    <script></script>
   </body>
 </html>
