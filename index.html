@@ -18,12 +18,33 @@
           scale="3 3 3"
           rotation="0 180 0"
           gltf-model="JD_ONLY.glb"
-          animation="property: rotation; dur: 50000;
-          to: 0 -360 0; loop: true"
         >
         </a-entity>
       </a-marker>
+
       <a-marker preset="hiro">
+        <a-entity
+          id="star"
+          scale="0.03 0.03 0.03"
+          rotation="0 180 0"
+          gltf-model="horchan.glb"
+          animation="property: rotation; dur: 50000;
+        to: 0 -360 0; loop: true"
+        ></a-entity>
+      </a-marker>
+
+      <a-marker type="pattern" url="pattern-lotus-bump3.patt">
+        <a-entity
+          id="model"
+          scale="1 1 1"
+          rotation="0 180 0"
+          gltf-model="buddhaOK.glb"
+          animation="property: rotation; dur: 50000;
+          to: 0 -360 0; loop: true"
+        ></a-entity>
+      </a-marker>
+
+      <a-marker type="pattern" url="pattern-JDpattern.patt">
         <a-entity
           id="man"
           scale="1"
@@ -33,22 +54,24 @@
         ></a-entity>
       </a-marker>
 
-      <a-marker type="pattern" url="pattern-lotus-bump3.patt">
-        <a-entity
-          id="model"
-          scale="2 2 2"
-          rotation="0 180 0"
-          gltf-model="buddhaOK.glb"
-          animation-mixer="clip:wai;duration:1;loop:repeat;"
-          animation="property: rotation; dur: 50000;
-          to: 0 -360 0; loop: true"
-        ></a-entity>
-
-        <!-- use your gltf model -->
-      </a-marker>
-
       <a-entity camera></a-entity>
     </a-scene>
-    <script></script>
+    <script>
+      const man = document.getElementById("man");
+      const actions = ["walk", "wai", "stand"];
+      let i = 0;
+      const clip = () => {
+        setTimeout(() => {
+          man.setAttribute(
+            "animation-mixer",
+            "clip:" + actions[i] + ";duration:1;loop:repeat;"
+          );
+          if (i == actions.length) i = 0;
+          else i++;
+          clip();
+        }, 3000);
+      };
+      clip();
+    </script>
   </body>
 </html>
