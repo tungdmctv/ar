@@ -10,12 +10,22 @@
   <!-- include ar.js for A-Frame -->
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <!-- <script src="gesture-detector.js"></script>
+  <script src="gesture-handler.js"></script> -->
   <body style="margin: 0px; overflow: hidden">
+    <button
+      style="top: 50; left: 50; margin: 10 10 10 10; position: relative"
+      onclick="toggleMuteVideo();"
+    >
+      Mute
+    </button>
     <a-scene
       embedded
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
       gltf-model="dracoDecoderPath: gltf/;"
       renderer="logarithmicDepthBuffer: true; precision: medium;"
+      gesture-detector
+      id="scene"
     >
       <a-assets>
         <video
@@ -57,7 +67,7 @@
           position="0 0.1 0"
           rotation="-90 0 0"
           class="clickable"
-          gesture-handler
+          raycaster="objects: .clickable" cursor="rayOrigin: mouse;"
         ></a-video>
       </a-marker>
 
@@ -133,18 +143,16 @@
           gltf-model="./trex/scene.gltf"
           scale="0.05 0.05 0.05"
           rotation="0 180 0"
-
           position="1 0 0"
         ></a-entity>
 
         <a-entity
-        gltf-model="./trex/scene.gltf"
-        scale="0.05 0.05 0.05"
-        rotation="0 180 0"
-
-        position="-1 0 0"
-      ></a-entity>
-      <a-entity light="type: ambient; color: #999999"></a-entity>
+          gltf-model="./trex/scene.gltf"
+          scale="0.05 0.05 0.05"
+          rotation="0 180 0"
+          position="-1 0 0"
+        ></a-entity>
+        <a-entity light="type: ambient; color: #999999"></a-entity>
       </a-marker>
       <!-- <a-nft
         type="nft"
@@ -189,6 +197,7 @@
             "markerFound",
             function () {
               this.toggle = true;
+              this.muted = false;
               this.vid.volume = 1;
               this.vid.play();
             }.bind(this)
@@ -207,6 +216,7 @@
       const man = document.getElementById("man");
       const actions = ["walk", "wai", "stand"];
       let i = 0;
+
       const clip = () => {
         setTimeout(() => {
           man.setAttribute(
@@ -219,6 +229,12 @@
         }, 3000);
       };
       clip();
+      function toggleMuteVideo() {
+        console.log("muted");
+        const vid = document.querySelector("#vid");
+        vid.muted = false;
+        vid.volume = 1;
+      }
     </script>
   </body>
 </html>
